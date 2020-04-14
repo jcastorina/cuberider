@@ -28,7 +28,7 @@ btn.addEventListener('click', ()=>{
 
 btn2.addEventListener('click', ()=>{
     socket.emit('tellme', {
-        data: null,
+        data: socket.id,
     })
 });
 
@@ -36,12 +36,13 @@ socket.on('test', (data)=>{
     input1 = data.data1;
     input2 = data.data2;
     console.log(data);
-    //console.log(socket);
+
 })
 
 socket.on('tellme', (data)=>{
-     console.log(data);
-    //console.log(socket);
+
+    console.log('\n-----------------\n\n   ',data[0],' said hi *\n');
+
 })
 
 

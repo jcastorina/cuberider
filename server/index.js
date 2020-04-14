@@ -26,7 +26,7 @@ io.on('connection', (socket)=>{
         var socks;
         socks = Object.keys(io.sockets.sockets);
         var remaining = [];
-        console.log('\n-----------------\n\n   ',arr_diff(socks, allClients)[0],' disconnected *\n');
+        console.log('\n-----------------\n\n   ',arr_diff(socks, allClients)[0],' disconnected *');
 
         for(i in allClients){
             for(j in socks){
@@ -53,8 +53,8 @@ io.on('connection', (socket)=>{
             data2: data2
         })
     });
-    socket.on('tellme', ()=>{
-        console.log(allClients);
+    socket.on('tellme', (data)=>{
+            console.log('\n-----------------\n\n   ',Object.values(data)[0],' says hi :) *');
     });       
 });
 

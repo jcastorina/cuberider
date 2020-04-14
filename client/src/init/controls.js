@@ -1,60 +1,17 @@
 export default () => {
     function onWindowResize() {
         
-        var width = window.innerWidth;
-        var height = width;
-        var offsety = null;
-        //var offsetz = -100;
-
-        
-        if(width >= window.innerHeight){
-            height = 0.9 * window.innerHeight;
-            width = height.valueOf();
-            var offsetx = (window.innerWidth - height) /2;
-            offsety = (window.innerHeight - height) /2;
-            //renderer.setViewport(100,100,1000,1000);
-            renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
-            renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
-
-        }   else {
-  
-            width = 0.9 * window.innerWidth;
-            height = width.valueOf();
-            var offsetx = (window.innerWidth - width) /2;
-            offsety = (window.innerHeight - width) /2;
-            //renderer.setViewport(100,100,1000,1000);
-            renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
-            renderer.domElement.parentNode.style.paddingRight = ''+offsetx+'px';
-            renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
-            console.log('less');
-            //renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
-            //renderer.domElement.parentNode.style.paddingLeft = ''+offsetz+'px';
-
-
-        }
+        var width = Math.floor(0.98 * window.innerWidth);
+        var height = Math.floor(width*9/20);
+        renderer.setSize(width,height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        renderer.setSize( width, height );
-        console.log(width, height);    
-             
-        
-        
-        
-        
-     /*   
-        var width = window.innerWidth;
-        var height = Math.floor(width*9/16);
-        var offset = (window.innerHeight - height) /2;
-        var offsetw = (window.innerWidth - width) /2;
-        renderer.domElement.parentNode.style.paddingTop = ''+offset+'px';
-        
-        renderer.domElement.parentNode.style.paddingLeft = ''+offsetw+'px';
+        div.appendChild( renderer.domElement );
+        var offsetx = (window.innerWidth - width) /2;
+        var offsety = (window.innerHeight - height) /2;
+        renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
+        renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
 
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize( width, height );
-        console.log(width);
-    */
     }
 
     function onDocumentMouseMove(event) {
@@ -101,7 +58,6 @@ export default () => {
         me.keyboard[event.which] = false;
     }
     window.addEventListener( 'resize', onWindowResize, false );
-    window.addEventListener( 'load', onWindowResize, false );
     window.addEventListener( 'mousemove', onDocumentMouseMove, false );
     window.addEventListener( 'keydown', onDocumentKeyDown, false );
     window.addEventListener( 'keyup', onDocumentKeyUp, false );

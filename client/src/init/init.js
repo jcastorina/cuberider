@@ -1,42 +1,21 @@
 import controls from './controls.js';
-//import initRenderer from './initRenderer';
-
-//global.renderer =  new THREE.WebGLRenderer({ antialias: true });
 
 export default () => {
-
-
-
-
-//    renderer.setSize( window.innerWidth, window.innerHeight );
-
-    //div.appendChild( renderer.domElement );
     global.renderer =  new THREE.WebGLRenderer({ antialias: true });   
-
-    var width = window.innerWidth;
-    console.log(window.innerWidth);
-    var height = Math.floor(width);
-    var offset = (window.innerHeight - height) /2;
-    var offsetw = (window.innerWidth - width) /2;
-    div.appendChild( renderer.domElement );
-    renderer.domElement.parentNode.style.paddingTop = ''+offset+'px';
-    renderer.domElement.parentNode.style.paddingLeft = ''+offsetw+'px';
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( width, height );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    console.log(width);
-
-
-
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.renderReverseSided = false;
-
-  //  global.renderer = initRenderer();
+ 
+    //renderer.domElement.onload = () => {
+        var width = Math.floor(0.98 * window.innerWidth);
+        var height = Math.floor(width*9/20);
+        renderer.setSize(width,height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        div.appendChild( renderer.domElement );
+        var offsetx = (window.innerWidth - width) /2;
+        var offsety = (window.innerHeight - height) /2;
+        renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
+        renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
+  
+     // }
     me.mouse.curr.x = 0;
     me.mouse.curr.y = 0;
     camera.position.y = 3;
