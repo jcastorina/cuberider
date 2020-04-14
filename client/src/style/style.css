@@ -1,0 +1,15 @@
+@font-face {
+font-family: 'MyFont';
+src: url('./efesto.otf') format('otf'),
+     url('./efesto.ttf') format('ttf');
+font-weight: 1000;
+font-style: normal;
+}
+
+body {
+    background: black;
+}
+
+.container {
+    vertical-align: bottom;
+}
