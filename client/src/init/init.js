@@ -26,6 +26,8 @@ export default () => {
             newLockedMouse = false;
             var chat = document.getElementById("chatWindow");
             chat.className = "hidden";
+            var chat = document.getElementById("message");
+            chat.className = "hidden";
         }
         lockedMouse = true;
     }

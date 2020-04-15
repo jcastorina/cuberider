@@ -16,10 +16,14 @@ var allClients = [];
 io.on('connection', (socket)=>{
 
     console.log('\n-----------------\n\n   ',socket.id,' connected *\n');
+
     allClients.push(socket.id);
+    io.sockets.emit('connected',socket.id);
     for(i in allClients){
         console.log('   ',allClients[i],' online')
     }
+
+
 
 
     socket.on('disconnect', ()=>{
@@ -51,17 +55,27 @@ io.on('connection', (socket)=>{
     
     socket.on('tellme', (data)=>{
             console.log('\n-----------------\n\n   ',Object.values(data)[0],' says hi :) *');
-    });       
+    });
+    socket.on('needScott',()=>{
+        socket.emit('scott',{
+            id: socket.id,
+            x: 12,
+            y: 2,
+            z: 10,
+        });
+        io.sockets.emit('joined',socket.id);
+    })
+    socket.on('player', (player)=>{
+        console.log(player);
+        socket.broadcast.emit('playerMove',player);
+    });   
 });
 
 function arr_diff (a1, a2) {
-
     var a = [], diff = [];
-
     for (var i = 0; i < a1.length; i++) {
         a[a1[i]] = true;
     }
-
     for (var i = 0; i < a2.length; i++) {
         if (a[a2[i]]) {
             delete a[a2[i]];
@@ -69,10 +83,8 @@ function arr_diff (a1, a2) {
             a[a2[i]] = true;
         }
     }
-
     for (var k in a) {
         diff.push(k);
     }
-
     return diff;
 }

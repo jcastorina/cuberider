@@ -7,6 +7,7 @@ global.scene = new THREE.Scene();
 global.textureLoader = new THREE.TextureLoader();
 global.renderer =  new THREE.WebGLRenderer({ antialias: true });   
 
+global.charlist = [];
 
 global.div = document.createElement( 'div' );
 div.setAttribute( "id", "container");
@@ -16,24 +17,18 @@ global.raycaster = new THREE.Raycaster();
 global.vmouse = new THREE.Vector2();
 global.vmouseOffset = new THREE.Vector2();
 
-global.send = false;
-
-global.player = new THREE.Object3D();
-player.name = "player";
-player.rotation.reorder("YXZ");
-
-//test
-//global.FPS = 60;
-//global.DURATION = 1 / FPS;
 global.DEV_CAM_SPEED = 0.1;
 global.DELTAFACTOR = 1;
 
 global.GRAVITY = 0.083;
 global.JUMPFORCE = 10;
 
-player.jumping = false;
-player.falling = true;
-player.move = true;
+global.send = false;
+
+//test
+//global.FPS = 60;
+//global.DURATION = 1 / FPS;
+
 
 global.intersects = null;
 global.lockedMouse = false;

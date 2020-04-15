@@ -9,7 +9,6 @@ export default () => {
         renderer.setSize(width,height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-       // div.appendChild( renderer.domElement );
         var offsetx = (window.innerWidth - width) /4;
         var offsety = (window.innerHeight - height) /2;
         renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
@@ -56,6 +55,8 @@ export default () => {
             lockedMouse = false;
             newLockedMouse = true;
             var chat = document.getElementById("chatWindow");
+            chat.className = "visible";
+            var chat = document.getElementById("message");
             chat.className = "visible";
         }
 

@@ -29,6 +29,7 @@ export default () => {
     input2.setAttribute("id","message");
     input2.setAttribute("type","text");
     input2.setAttribute("placeholder","message");
+    input2.setAttribute("class","visible");
     div1.appendChild(input2);
     
     var container = document.getElementById('container');
