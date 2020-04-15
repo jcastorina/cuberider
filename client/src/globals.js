@@ -5,6 +5,8 @@ camera.rotation.reorder("YXZ");
 
 global.scene = new THREE.Scene();
 global.textureLoader = new THREE.TextureLoader();
+global.renderer =  new THREE.WebGLRenderer({ antialias: true });   
+
 
 global.div = document.createElement( 'div' );
 div.setAttribute( "id", "container");
@@ -13,6 +15,8 @@ document.body.appendChild( div );
 global.raycaster = new THREE.Raycaster();
 global.vmouse = new THREE.Vector2();
 global.vmouseOffset = new THREE.Vector2();
+
+global.send = false;
 
 global.player = new THREE.Object3D();
 player.name = "player";

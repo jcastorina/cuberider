@@ -1,3 +1,6 @@
+
+
+
 export default () => {
     function onWindowResize() {
         
@@ -6,8 +9,8 @@ export default () => {
         renderer.setSize(width,height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        div.appendChild( renderer.domElement );
-        var offsetx = (window.innerWidth - width) /2;
+       // div.appendChild( renderer.domElement );
+        var offsetx = (window.innerWidth - width) /4;
         var offsety = (window.innerHeight - height) /2;
         renderer.domElement.parentNode.style.paddingLeft = ''+offsetx+'px';
         renderer.domElement.parentNode.style.paddingTop = ''+offsety+'px';
@@ -46,10 +49,20 @@ export default () => {
     }
 
     function onDocumentKeyDown(event){
-        if(event.which === 27){
+
+        if(event.which === 27){//ESC
             document.exitPointerLock();
+
             lockedMouse = false;
             newLockedMouse = true;
+            var chat = document.getElementById("chatWindow");
+            chat.className = "visible";
+        }
+
+        if(event.which === 13){//ENTER
+            if(lockedMouse === false){
+                send = true;
+            }
         }
         me.keyboard[event.which] = true;
     }

@@ -1,7 +1,7 @@
 import loadGLTF from './loadGLTF';
 import loadSkybox from './loadSkybox';
 import addCubes from './addCubes';
-import favicon from './favicon';
+import html from './html';
 import addGrass from './addGrass';
 
 export default () => {
@@ -9,5 +9,5 @@ export default () => {
     loadSkybox(THREE,scene,camera);
     addCubes();
     addGrass();
-    favicon();
+    html();
 }

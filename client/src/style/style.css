@@ -1,15 +1,100 @@
-@font-face {
-font-family: 'MyFont';
-src: url('./efesto.otf') format('otf'),
-     url('./efesto.ttf') format('ttf');
-font-weight: 1000;
-font-style: normal;
-}
-
 body {
     background: black;
+    font-family: 'Nuninto';
 }
 
-.container {
-    vertical-align: bottom;
+#canvas{
+
+}
+
+#chatApp{
+    max-width: 600px;
+    height: 100px;
+    margin-top: 0px;
+ 
+    box-shadow: 1px 3px 5px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    display: block;
+
+}
+
+#chatWindow{
+    height: 600px;
+    max-height: 600px;
+    width: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+
+    margin-top: -605px;
+    z-index: -1;
+    display: flex;
+    flex-direction: column-reverse;
+
+
+}
+
+::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #EEE;
+}
+
+#wrapper{
+    opacity: 1;
+}
+
+#output p{
+    padding: 5px 0px;
+    margin: 0 5px;
+
+    color: #EEE;
+    text-shadow: -1px 0 black;
+    font-size: x-large;
+}
+
+#feedback p{
+    color: #aaa;
+    padding: 0px 0px;
+    margin: 0 0px;
+}
+
+#output strong{
+    color: #33FF33;
+    font-weight: bold;
+    font-size: large;
+    text-shadow: -1px 0 black;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.1s linear;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+}
+
+label{
+    box-sizing: border-box;
+    display: block;
+    padding: 10px 20px;
+}
+
+input{
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: #333;
+    border: 0;
+    display: block;
+    width: 100%;
+    font-family: Nunito;
+    font-size: 16px;
+    color: #EEE;
 }

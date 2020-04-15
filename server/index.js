@@ -41,18 +41,14 @@ io.on('connection', (socket)=>{
         allClients = remaining;
     });
 
-    socket.on('test', (data)=>{
-        var data1 = data.data1 + 1;
-        var data2 = data.data2 + 1;
-        /*io.sockets.emit('test', {
-            data1: data1,
-            data2: data2
-        });*/
-        socket.emit('test',{
-            data1: data1,
-            data2: data2
-        })
+    socket.on('chat', (data)=>{
+        io.sockets.emit('chat',data);
     });
+
+    socket.on('typing', (data)=>{
+        socket.broadcast.emit('typing',data);
+    });
+    
     socket.on('tellme', (data)=>{
             console.log('\n-----------------\n\n   ',Object.values(data)[0],' says hi :) *');
     });       
