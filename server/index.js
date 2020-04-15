@@ -18,13 +18,12 @@ io.on('connection', (socket)=>{
     console.log('\n-----------------\n\n   ',socket.id,' connected *\n');
 
     allClients.push(socket.id);
+    
     io.sockets.emit('connected',socket.id);
+    
     for(i in allClients){
         console.log('   ',allClients[i],' online')
     }
-
-
-
 
     socket.on('disconnect', ()=>{
         var socks;
@@ -57,13 +56,15 @@ io.on('connection', (socket)=>{
             console.log('\n-----------------\n\n   ',Object.values(data)[0],' says hi :) *');
     });
     socket.on('needScott',()=>{
-        socket.emit('scott',{
+        var scott = {
             id: socket.id,
             x: 12,
             y: 2,
             z: 10,
-        });
-        io.sockets.emit('joined',socket.id);
+        };
+        socket.emit('scott', scott);
+        io.sockets.emit('joined',scott.id);
+        socket.broadcast.emit('addScott',scott);
     })
     socket.on('player', (player)=>{
         console.log(player);

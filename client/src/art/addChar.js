@@ -15,6 +15,5 @@ export default (scott) =>{
     var pos = { x: scott.x, y: scott.y, z: scott.z};
     var char = new gameObj(pos,s,spin,id, makeShaderMaterial(color3.a,color3.b));
     charlist.push(char);
-   // scene.add(char.mesh);
     return char
 }

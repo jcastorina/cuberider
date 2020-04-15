@@ -28,6 +28,8 @@ var DOINK = false;
 var playerOld = new THREE.Vector3();
 var playerNew = new THREE.Vector3();
 
+global.players = [];
+
 var playerStart = true;
 
 var socket = io.connect('http://localhost:1337');
@@ -75,24 +77,47 @@ socket.on('typing', (data)=>{
 
 socket.on('tellme', (data)=>{
     console.log('\n-----------------\n\n   ',data[0],' said hi *\n');
-})
+});
 
 socket.on('connected', (socket)=>{
     output.innerHTML += '<p><strong>'+socket+' connected </strong></p>'
+});
 
-   // console.log('\n-----------------\n\n   ',data[0],' said hi *\n');
-})
+socket.on('joined', (id)=>{
+    output.innerHTML += '<p><strong>'+id+' joined! </strong></p>'
+});
 
-socket.on('joined', (socket)=>{
-    output.innerHTML += '<p><strong>'+socket+' joined! </strong></p>'
+socket.on('addScott',(scott)=>{
+    var player = addChar(scott);
+    scene.add(player.mesh);
+    players.push(player);
 
-   // console.log('\n-----------------\n\n   ',data[0],' said hi *\n');
-})
+});
+
+for(i in cubes){
+    players.push(cubes[i]);
+}
+
+socket.on('playerMove',(player)=>{
+    for(i in players){
+        if(player.id === players[i].name){
+            players[i].mesh.position.x = player.x;
+            players[i].mesh.position.y = player.y;
+            players[i].mesh.position.z = player.z;
+        }
+    }
+});
 
 export default function updateState(){
 
     delta = clock.getDelta() * DELTAFACTOR;
     playerOld.set(playerNew.x,playerNew.y,playerNew.z);
+    
+
+    
+
+    
+    
 
     if(lockedMouse){
         if(playerStart){
@@ -107,7 +132,6 @@ export default function updateState(){
                 player.jumping = false;
                 player.falling = true;
                 player.move = true;
-    
                 playerStart = false;
             })    
         }
@@ -119,8 +143,8 @@ export default function updateState(){
                     player.mesh.position.y += JUMPFORCE * delta * 1.2;
                 }
             }
-            if(player.mesh.position.y < -4.8){
-                player.mesh.position.y = -4.8;
+            if(player.mesh.position.y < -3.8){
+                player.mesh.position.y = -3.8;
                 player.jumping = false;
                 player.falling = false;
                 force = GRAVITY;
@@ -205,6 +229,17 @@ export default function updateState(){
     }
     for(i in cubeMeshes){
         cubeMeshes[i].next(delta);
+    }
+    for(i in players){
+        if(players[i].mesh.shot === true){
+            var playerData = {
+                id: players[i].name,
+                x: players[i].mesh.position.x,
+                y: players[i].mesh.position.y,
+                z: players[i].mesh.position.z
+            }
+            socket.emit('player', playerData)
+        }
     }
 }
 

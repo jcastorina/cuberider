@@ -10,7 +10,7 @@ export default class shaderCube {
         this.mesh.name = this.name = name;
         this.mesh.launchVec = null;
         this.mesh.force = null;
-        this.mesh.weight = 6;
+        this.mesh.weight = 8;
         this.spin = spin;
         this.toggle = true;
         this.mesh.scale.set(scale.x,scale.y,scale.z);
@@ -20,7 +20,7 @@ export default class shaderCube {
                 this.mesh.force += delta;
                 this.mesh.position.y -= this.mesh.force * GRAVITY * this.mesh.weight;
                 if(this.mesh.position.y < this.mesh.startingHeight){
-                    this.mesh.position.set(this.mesh.startingPos.x,this.mesh.startingPos.y,this.mesh.startingPos.z);
+                    //this.mesh.position.set(this.mesh.startingPos.x,this.mesh.startingPos.y,this.mesh.startingPos.z);
                     this.mesh.shot = false;
                     this.mesh.force = 0;
                 }
