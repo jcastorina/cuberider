@@ -1,6 +1,7 @@
 global.THREE = require('three')
+global.fov = 40;
 
-global.camera = new THREE.PerspectiveCamera( 68, window.innerWidth / window.innerHeight, 0.1, 50000 );
+global.camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 0.1, 50000 );
 camera.rotation.reorder("YXZ");
 
 global.scene = new THREE.Scene();
@@ -8,6 +9,7 @@ global.textureLoader = new THREE.TextureLoader();
 global.renderer =  new THREE.WebGLRenderer({ antialias: true });   
 
 global.charlist = [];
+global.fieldStack = [];
 
 global.div = document.createElement( 'div' );
 div.setAttribute( "id", "container");
@@ -22,6 +24,8 @@ global.DELTAFACTOR = 1;
 
 global.GRAVITY = 0.083;
 global.JUMPFORCE = 10;
+global.GROUND = -4.3;
+
 
 global.send = false;
 

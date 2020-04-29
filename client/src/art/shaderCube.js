@@ -3,7 +3,8 @@ export default class shaderCube {
         let geometry = new THREE.BoxGeometry(1,1,1);
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.shot = false;
-        this.mesh.startingHeight = pos.y;
+        this.mesh.startingHeight = GROUND;
+        //this.mesh.startingHeight = pos.y;
         this.mesh.startingPos = pos;
         this.mesh.position.set(pos.x,pos.y,pos.z);
         this.mesh.lastPos = null;
