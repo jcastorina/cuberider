@@ -70,10 +70,11 @@ global.JUMPFORCE = 10;
 //chat stuff
 var socket = io.connect('http://localhost:1337');
 
-var message = document.getElementById("message");
-var output = document.getElementById("output");
-var feedback = document.getElementById("feedback");
-var chat = document.getElementById("chatWindow");
+var message = document.getElementById('message');
+var output = document.getElementById('output');
+var feedback = document.getElementById('feedback');
+var chat = document.getElementById('chatWindow');
+var score = document.getElementById('score');
 chat.className = "visible";
 
 chat.addEventListener('click', ()=>{
@@ -278,6 +279,7 @@ export default function updateState(){
                         if(intersects[0].object.hit === false){
                             intersects[0].object.hit = true;
                             player.hitCount += 1;
+                            score.innerText = player.hitCount;
                             var shootData = {
                                 hit: true,
                                 v: intersects[0].object.launchVec,

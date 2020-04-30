@@ -25,13 +25,24 @@ export default () => {
     div4.setAttribute("id","feedback");
     div2.appendChild(div4);
   
-    let input2 = document.createElement('input');
-    input2.setAttribute("id","message");
-    input2.setAttribute("type","text");
-    input2.setAttribute("placeholder","message");
-    input2.setAttribute("class","visible");
-    div1.appendChild(input2);
+    let bottomPaneWrapper = document.createElement('div');
+    bottomPaneWrapper.setAttribute("id","wrapper");
+    div1.appendChild(bottomPaneWrapper);
+
+    let message = document.createElement('input');
+    message.setAttribute("id","message");
+    message.setAttribute("type","text");
+    message.setAttribute("placeholder","message");
+    message.setAttribute("class","visible");
+    bottomPaneWrapper.appendChild(message);
+    
+
+    let score = document.createElement('div');
+    score.setAttribute("id","score");
+    score.setAttribute("class","visible");
+
     
     var container = document.getElementById('container');
     container.appendChild(div1);
+    container.appendChild(score);
 }

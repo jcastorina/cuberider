@@ -7,6 +7,7 @@ export default function textLoad(input,balls){
         var xMid, text;
 
         var color = 0x006699;
+        //var color = 0x33FFFF;
 
         var matDark = new THREE.LineBasicMaterial( {
             color: color,
@@ -16,7 +17,7 @@ export default function textLoad(input,balls){
         var matLite = new THREE.MeshBasicMaterial( {
             color: color,
             transparent: true,
-            opacity: 0.66,
+            opacity: 0.5,
             side: THREE.DoubleSide
         } );
 

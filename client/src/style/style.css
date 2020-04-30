@@ -69,6 +69,25 @@ body {
     text-shadow: -1px 0 black;
 }
 
+#output weak{
+    width: 600px;
+    max-width: 600px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: large;
+    text-shadow: -1px 0 black;
+}
+
+#score {
+    padding: 5px 0px;
+    margin: 0 5px;
+
+    color: #E22;
+    text-shadow: -1px 0 black;
+    font-size: x-large;
+    float: right;
+}
+
 .visible {
     visibility: visible;
     opacity: 1;
@@ -97,4 +116,5 @@ input{
     font-family: Nunito;
     font-size: 16px;
     color: #EEE;
+    float: left;
 }

@@ -19,6 +19,7 @@ export default class shaderCube {
         this.mesh.scale.set(scale.x,scale.y,scale.z);
         this.mesh.next = (delta) => {
             if(this.mesh.shot){
+                this.mesh.material.wireframe = true;
                 this.mesh.position.add(this.mesh.launchVec);
                 this.mesh.force += delta;
                 this.mesh.position.y -= this.mesh.force * GRAVITY * this.mesh.weight;
@@ -28,24 +29,11 @@ export default class shaderCube {
                     this.mesh.force = 0;
                 }
             }
-           /* if(this.name === 'mover'){
-                console.log('pre', movingCube.mesh.position);   
-               if(this.mesh.position.z < 5 && this.toggle){
-                    this.mesh.position.z += (0.05);
-                    this.mesh.position.x += (0.025);
-                } else {
-                    this.toggle = false
-                    this.mesh.position.z -= 0.05;
-                    this.mesh.position.x -= 0.025;
-                }
-                if(this.mesh.position.z < -5){
-                    this.toggle = true;
-                }
-                console.log('post', movingCube.mesh.position);   
-            }*/
+
             this.mesh.rotation.x += this.spin.x;
             this.mesh.rotation.y += this.spin.y;
             this.mesh.rotation.z += this.spin.z;
         }
+        
     }
 }
