@@ -47,7 +47,5 @@ export default function addCubes() {
 
     scene.add(movingCube.mesh);
 
-    for(let i in cubes){
-        cubeMeshes[i] = cubes[i].mesh;
-    }
+
 }

@@ -2,12 +2,16 @@ import raycast from './tools/raycast';
 import io from 'socket.io-client';
 import addChar from './art/addChar.js';
 import init from './init/init';
+import recurseShader from './art/recurseShader';
 import doArt from './art/doArt';
 
+
+
+//need these functions here so the objects can interface with socket in the loop
 init();
 doArt();
 
-
+//some variables that may belong here or may get moved
 global.player = null;
 
 global.launchVec = new THREE.Vector3();
@@ -19,7 +23,6 @@ var delta;
 var force = GRAVITY;
 var lastPos = new THREE.Vector3();
 var newPos = new THREE.Vector3();
-//let lastIndex = [];
 let index0 = new THREE.Vector3();
 let index1 = new THREE.Vector3();
 let index2 = new THREE.Vector3();
@@ -32,6 +35,39 @@ global.players = [];
 
 var playerStart = true;
 
+//reticule code -- move somewhere better
+var material = new THREE.LineBasicMaterial({
+	color: 0x666666
+});
+
+var side1 = 0.04;
+var side2 = 0.01;
+var lpoints = [new THREE.Vector3( -side1, 0, 0 ),new THREE.Vector3( -side2, 0, 0 )];
+var rpoints = [new THREE.Vector3(  side2, 0, 0 ),new THREE.Vector3(  side1, 0, 0 )];
+var upoints = [new THREE.Vector3(  0, side1, 0 ),new THREE.Vector3(  0, side2, 0 )];
+var dpoints = [new THREE.Vector3( 0, -side1, 0 ),new THREE.Vector3(  0,-side2, 0 )];
+
+var geo1 = new THREE.BufferGeometry().setFromPoints( lpoints );
+var geo2 = new THREE.BufferGeometry().setFromPoints( rpoints );
+var geo3 = new THREE.BufferGeometry().setFromPoints( upoints );
+var geo4 = new THREE.BufferGeometry().setFromPoints( dpoints );
+var line1 = new THREE.Line( geo1, material );
+var line2 = new THREE.Line( geo2, material );
+var line3 = new THREE.Line( geo3, material );
+var line4 = new THREE.Line( geo4, material );
+line1.position.z = -2;
+line2.position.z = -2;
+line3.position.z = -2;
+line4.position.z = -2;
+
+//variables that are for some reason here and not in the global header
+global.DEV_CAM_SPEED = 0.1;
+global.DELTAFACTOR = 1;
+
+global.GRAVITY = 0.083;
+global.JUMPFORCE = 10;
+
+//chat stuff
 var socket = io.connect('http://localhost:1337');
 
 var message = document.getElementById("message");
@@ -39,12 +75,6 @@ var output = document.getElementById("output");
 var feedback = document.getElementById("feedback");
 var chat = document.getElementById("chatWindow");
 chat.className = "visible";
-
-global.DEV_CAM_SPEED = 0.1;
-global.DELTAFACTOR = 1;
-
-global.GRAVITY = 0.083;
-global.JUMPFORCE = 10;
 
 chat.addEventListener('click', ()=>{
     console.log("test");
@@ -87,6 +117,7 @@ socket.on('joined', (id)=>{
     output.innerHTML += '<p><strong>'+id+' joined! </strong></p>'
 });
 
+//when a new player connects
 socket.on('addScott',(scott)=>{
     var player = addChar(scott);
     scene.add(player.mesh);
@@ -94,9 +125,10 @@ socket.on('addScott',(scott)=>{
 
 });
 
-for(i in cubes){
-    players.push(cubes[i]);
-}
+//get input from server to move objects
+//for(i in cubes){
+//    players.push(cubes[i]);
+//};
 
 socket.on('playerMove',(player)=>{
     for(i in players){
@@ -108,34 +140,61 @@ socket.on('playerMove',(player)=>{
     }
 });
 
+socket.on('objNotify',(obj)=>{
+    console.log('updating',obj)
+    for(i in cubes){
+        if(obj.name === cubes[i].name){
+           
+            cubes[i].mesh.hit = obj.hit;
+            cubes[i].mesh.launchVec = obj.v;
+            cubes[i].mesh.shot = obj.shot;
+        }
+    }
+});
+
+socket.on('field',(initField)=>{
+    console.log(initField);
+    recurseShader(initField);
+    for(let i in cubes){
+        cubeMeshes[i] = cubes[i].mesh;
+    }
+})
+
+//THE LOOP, which is for some reason an exportable module..
 export default function updateState(){
-
+    //sync updates with desired framerate
     delta = clock.getDelta() * DELTAFACTOR;
+    //part 1 only move to server if you moved
     playerOld.set(playerNew.x,playerNew.y,playerNew.z);
-    
-
-    
-
-    
-    
-
+    //click screen to play
     if(lockedMouse){
+        //if you're just starting
         if(playerStart){
             socket.emit('needScott',socket.id);
             socket.on('scott',(scott)=>{
                 player = addChar(scott);
+                player.mesh.add( line1, line2, line3, line4 );
                 scene.add(player.mesh);
-                camera.position.z = 5;
                 player.mesh.add(camera);
+               
+                //scene2.add(camera2);
+                //player.mesh.add(camera2);
+                player.mesh.add(scene2);
+                
                 player.mesh.name = "player";
                 player.mesh.rotation.reorder("YXZ");
                 player.jumping = false;
                 player.falling = true;
                 player.move = true;
+                player.hitCount = 0;
                 playerStart = false;
             })    
         }
+        //if you've already started and are returning
         if(!playerStart){
+           // testShit[0].position.set(camera2.position.x,camera2.position.y,camera2.position.z - 5);
+           // testShit[0].rotation.set(camera2.rotation.x,camera2.rotation.y,camera2.rotation.z)
+            //testShit[0].position.z = -5;
             if(player.falling){
                 force += GRAVITY * delta;
                 player.mesh.position.y -= force;
@@ -143,6 +202,7 @@ export default function updateState(){
                     player.mesh.position.y += JUMPFORCE * delta * 1.2;
                 }
             }
+            //gravity
             if(player.mesh.position.y < -3.8){
                 player.mesh.position.y = -3.8;
                 player.jumping = false;
@@ -162,11 +222,14 @@ export default function updateState(){
                 movingCube.falling = false;
                 movingCube.force = GRAVITY;
             }
+            //movingCube collisions fudge factor to back up 2+ frames
             lastPos.set(newPos.x,newPos.y,newPos.z);
             index3.set(index2.x,index2.y,index2.z);
             index2.set(index1.x,index1.y,index1.z);
             index1.set(index0.x,index0.y,index0.z);
             index0.set(lastPos.x,lastPos.y,lastPos.z);
+            //everything's dev mode but whatever
+            //player controls
             if(devMode){
                 player.mesh.rotation.y = -me.mouse.curr.x;
                 player.mesh.rotation.x = -me.mouse.curr.y;
@@ -198,6 +261,12 @@ export default function updateState(){
                     } 
                 }
             }
+            //shooter
+            
+           // for(var i in scene.children.length){
+            //    scene.children[i].mesh.applyMatrix4(player.mesh.matrix);
+           // }
+
             raycast();
             if(intersects[0]){
                 intersects[0].object.rotation.y += 0.05;
@@ -206,14 +275,28 @@ export default function updateState(){
                         launchVec.subVectors(intersects[0].object.position,player.mesh.position).normalize();
                         intersects[0].object.shot = true;
                         intersects[0].object.launchVec = launchVec;
+                        if(intersects[0].object.hit === false){
+                            intersects[0].object.hit = true;
+                            player.hitCount += 1;
+                            var shootData = {
+                                hit: true,
+                                v: intersects[0].object.launchVec,
+                                shot: true,
+                                name: intersects[0].object.name
+                
+                            }
+                            cubes[i].launched = true;
+                   
+                            socket.emit('shootObj', shootData)
+                        }
                     }
                 }
             }
-
+            //movingCube collisions
             var originPoint = movingCube.mesh.position.clone();
             collisions(ray,originPoint,index1);
 
-
+            //part 2 only update to server if u moved
             newPos.set(movingCube.mesh.position.x,movingCube.mesh.position.y,movingCube.mesh.position.z);
             playerNew.set(player.mesh.position.x,player.mesh.position.y,player.mesh.position.z);
             if(!playerOld.equals(playerNew)){
@@ -227,10 +310,12 @@ export default function updateState(){
             }
         }
     }
-    for(i in cubeMeshes){
-        cubeMeshes[i].next(delta);
+    //animate cubes
+    for(i in cubes){
+        cubes[i].mesh.next(delta);
     }
-    for(i in players){
+    //notify server to update other clients with object state
+  /*  for(i in players){
         if(players[i].mesh.shot === true){
             var playerData = {
                 id: players[i].name,
@@ -238,9 +323,21 @@ export default function updateState(){
                 y: players[i].mesh.position.y,
                 z: players[i].mesh.position.z
             }
+            players[i].launched = true;
             socket.emit('player', playerData)
         }
     }
+    for(i in cubes){
+        if(cubes[i].mesh.shot === true){
+            var shootData = {
+                id: cubes[i].name,
+                v: cubes[i].mesh.launchVec
+
+            }
+            cubes[i].launched = true;
+            socket.emit('shootObj', shootData)
+        }
+    }*/
 }
 
 function collisions(ray,originPoint,index) {

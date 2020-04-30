@@ -1,10 +1,14 @@
 global.THREE = require('three')
 global.fov = 40;
+global.aspect = window.innerWidth / window.innerHeight;
 
-global.camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 0.1, 50000 );
+global.camera = new THREE.PerspectiveCamera( fov, aspect, 0.1, 50000 );
 camera.rotation.reorder("YXZ");
 
 global.scene = new THREE.Scene();
+global.scene2 = new THREE.Scene();
+scene2.position.z = -25;
+
 global.textureLoader = new THREE.TextureLoader();
 global.renderer =  new THREE.WebGLRenderer({ antialias: true });   
 
@@ -43,6 +47,8 @@ global.cubes = [];
 global.cubeMeshes = [];
 global.movingCube = null;
 global.shitBoxes = [];
+global.testShit = [];
+global.scottFont = null;
 
 global.me = {
     keyboard:[],

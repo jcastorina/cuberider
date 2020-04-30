@@ -1,5 +1,6 @@
 var express = require('express');
 var socket = require('socket.io');
+var blockCity = require('./blockCity');
 
 var app = express();
 var server = app.listen('1337', ()=>{
@@ -12,6 +13,7 @@ var io = socket(server);
 
 var allClients = [];
 
+var initField = blockCity.recurse(20,20);
 
 io.on('connection', (socket)=>{
 
@@ -20,7 +22,12 @@ io.on('connection', (socket)=>{
     allClients.push(socket.id);
     
     io.sockets.emit('connected',socket.id);
+    socket.emit('field',{
     
+        field: initField
+    })
+
+
     for(i in allClients){
         console.log('   ',allClients[i],' online')
     }
@@ -65,11 +72,15 @@ io.on('connection', (socket)=>{
         socket.emit('scott', scott);
         io.sockets.emit('joined',scott.id);
         socket.broadcast.emit('addScott',scott);
-    })
+    });
     socket.on('player', (player)=>{
-        console.log(player);
+        //console.log(player);
         socket.broadcast.emit('playerMove',player);
-    });   
+    });
+    socket.on('shootObj', (obj)=>{
+   
+        socket.broadcast.emit('objNotify',obj);
+    });     
 });
 
 function arr_diff (a1, a2) {

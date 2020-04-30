@@ -14,6 +14,8 @@ export default class shaderCube {
         this.mesh.weight = 8;
         this.spin = spin;
         this.toggle = true;
+        this.launched = false;
+        this.mesh.hit = false;
         this.mesh.scale.set(scale.x,scale.y,scale.z);
         this.mesh.next = (delta) => {
             if(this.mesh.shot){

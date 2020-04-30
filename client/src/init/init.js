@@ -17,7 +17,6 @@ export default () => {
 
     me.mouse.curr.x = 0;
     me.mouse.curr.y = 0;
-    camera.position.y = 3;
     renderer.domElement.onclick = () => {
         renderer.domElement.requestPointerLock();
         if(newLockedMouse){
@@ -33,5 +32,8 @@ export default () => {
     }
     renderer.sortObjects = false;
     renderer.autoClear = false;
+
+
+
     controls();
 }
